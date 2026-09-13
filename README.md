@@ -22,7 +22,9 @@ then runs a structural-resilience battery:
 
 ## Data
 
-Raw edge and neuron tables are **not** in this repo (too large for git).
+Raw edge and neuron tables are in `pipeline/data/` as gzip-compressed CSVs
+(`edges_w0.csv.gz` is split in two parts because of GitHub's 100 MB file
+limit; see `pipeline/data/README.md` for reassembly and SHA256 hashes).
 They come from the public MaleCNS v1.0 release via neuPrint:
 
 - Source: `neuprint.janelia.org`, dataset `male-cns:v1.0`, released 2026-06-08 (CC BY)
