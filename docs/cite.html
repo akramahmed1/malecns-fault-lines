@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MaleCNS Structural Atlas - Cite this atlas</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/atlas.js"></script>
+</head>
+<body>
+
+<div class="notice"><strong>Please note:</strong> Structural connectivity is not behavior. A wiring diagram shows which routes exist, not what the fly does.</div>
+
+<header class="site">
+  <h1>MaleCNS Structural Atlas</h1>
+  <p class="sub">A structural resilience atlas of the complete male <em>Drosophila</em> central nervous system</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="mincut.html">Min-cut atlas</a>
+  <a href="lesions.html">Lesion explorer</a>
+  <a href="methods.html">Methods and provenance</a>
+  <a href="cite.html">Cite this atlas</a>
+</nav>
+
+<main>
+  <h2>Cite this atlas</h2>
+  <p>
+    If this atlas was useful in your work, please cite it. A Zenodo DOI for
+    the archived release is planned and will be added here when it exists.
+  </p>
+
+  <div class="card">
+    <pre class="cite" id="citation">Mohammed, A. MaleCNS Structural Atlas: a structural resilience atlas of the
+complete male Drosophila central nervous system (MaleCNS v1.0).
+https://github.com/akramahmed1/malecns-fault-lines
+Accessed: [add date]. Analysis of Berg et al., Cell 189(18), 2026,
+doi:10.1016/j.cell.2026.08.015.</pre>
+    <p><button id="copybtn" class="ghost">Copy citation</button>
+    <span id="copied" class="footnote" style="display:none">Copied.</span></p>
+  </div>
+
+  <div class="card">
+    <h3>What to cite for the data itself</h3>
+    <p>
+      The underlying connectome: Berg et al., "Sexual dimorphism in the
+      complete Drosophila male central nervous system connectome",
+      <em>Cell</em> 189(18), 2026, doi:10.1016/j.cell.2026.08.015. MaleCNS
+      v1.0, CC BY, via neuprint.janelia.org.
+    </p>
+  </div>
+</main>
+
+<footer>
+  MaleCNS Structural Atlas. Numbers generated from the analysis pipeline results;
+  see Methods and provenance. Structural connectivity is not behavior.
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("copybtn").addEventListener("click", function () {
+    var text = document.getElementById("citation").textContent;
+    function done() {
+      document.getElementById("copied").style.display = "";
+      setTimeout(function () {
+        document.getElementById("copied").style.display = "none";
+      }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+    } else { fallback(); }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      done();
+    }
+  });
+});
+</script>
+</body>
+</html>

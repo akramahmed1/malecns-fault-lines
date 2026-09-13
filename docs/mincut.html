@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MaleCNS Structural Atlas - Min-cut atlas</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/atlas.js"></script>
+</head>
+<body>
+
+<div class="notice"><strong>Please note:</strong> Structural connectivity is not behavior. A wiring diagram shows which routes exist, not what the fly does.</div>
+
+<header class="site">
+  <h1>MaleCNS Structural Atlas</h1>
+  <p class="sub">A structural resilience atlas of the complete male <em>Drosophila</em> central nervous system</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="mincut.html">Min-cut atlas</a>
+  <a href="lesions.html">Lesion explorer</a>
+  <a href="methods.html">Methods and provenance</a>
+  <a href="cite.html">Cite this atlas</a>
+</nav>
+
+<main>
+  <h2>Min-cut atlas</h2>
+  <p>
+    For each threshold, we computed the exact minimum sensory-to-motor cut:
+    the smallest total synapse weight whose removal disconnects every route
+    from the sensory population to the motor population. It is found with a
+    directed s-t min cut through a super source and super sink, so the cut
+    value and the cut edge set below are exact computations, not estimates.
+  </p>
+  <p class="footnote">
+    Removing the cut edges disconnects all 26,972 in-graph sensory neurons
+    from all 2,232 in-graph motor neurons. Body IDs are neuPrint identifiers.
+  </p>
+
+  <div class="tabs" id="th-tabs">
+    <button data-th="5" class="ghost">Threshold 5</button>
+    <button data-th="11" class="ghost">Threshold 11</button>
+  </div>
+
+  <div class="card">
+    <p class="loading">Loading atlas data...</p>
+    <div id="cutcontent" style="display:none">
+      <h3 id="cut-title"></h3>
+      <table class="stats">
+        <tr><th>Quantity</th><th>Value</th></tr>
+        <tr><td>Minimum cut value (total synapse weight)</td><td class="num" id="c-value"></td></tr>
+        <tr><td>Edges in the cut set</td><td class="num" id="c-nedges"></td></tr>
+        <tr><td>Cut edges as share of all edges</td><td class="num" id="c-share"></td></tr>
+      </table>
+
+      <h3>Most frequent source neurons in the cut</h3>
+      <p class="footnote">Neurons ranked by how many of their outgoing edges belong to the cut set.</p>
+      <div class="scrollbox"><table class="stats" id="c-sources"></table></div>
+
+      <h3>Most frequent target neurons in the cut</h3>
+      <p class="footnote">Neurons ranked by how many of their incoming edges belong to the cut set.</p>
+      <div class="scrollbox"><table class="stats" id="c-targets"></table></div>
+
+      <h3>Sample of cut edges</h3>
+      <p class="footnote">First 100 of <span id="c-total"></span> cut edges (source body ID to target body ID). The full list is in the results file; see Methods.</p>
+      <div class="scrollbox"><table class="stats" id="c-edges"></table></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  MaleCNS Structural Atlas. Numbers generated from the analysis pipeline results;
+  see Methods and provenance. Structural connectivity is not behavior.
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  Atlas.loadData(function (d) {
+    var cur = "5";
+    function render() {
+      var t = d.thresholds[cur], mc = t.mincut;
+      document.querySelector(".loading").style.display = "none";
+      document.getElementById("cutcontent").style.display = "";
+      document.getElementById("cut-title").textContent =
+        "Threshold " + cur + ": minimum sensory-to-motor cut";
+      document.getElementById("c-value").textContent = Atlas.fmtInt(mc.value);
+      document.getElementById("c-nedges").textContent = Atlas.fmtInt(mc.n_cut_edges);
+      document.getElementById("c-share").textContent =
+        (100 * mc.n_cut_edges / t.graph.n_edges).toFixed(2) + "%";
+      document.getElementById("c-total").textContent = Atlas.fmtInt(mc.n_cut_edges);
+
+      var sh = "<tr><th>Body ID</th><th>Cut edges</th></tr>";
+      mc.top_sources.forEach(function (r) {
+        sh += "<tr><td class='mono'>" + Atlas.esc(r.body_id) + "</td><td class='num'>" +
+          Atlas.fmtInt(r.cut_edges) + "</td></tr>";
+      });
+      document.getElementById("c-sources").innerHTML = sh;
+
+      var th2 = "<tr><th>Body ID</th><th>Cut edges</th></tr>";
+      mc.top_targets.forEach(function (r) {
+        th2 += "<tr><td class='mono'>" + Atlas.esc(r.body_id) + "</td><td class='num'>" +
+          Atlas.fmtInt(r.cut_edges) + "</td></tr>";
+      });
+      document.getElementById("c-targets").innerHTML = th2;
+
+      var eh = "<tr><th>#</th><th>Source</th><th>Target</th></tr>";
+      mc.sample_edges.forEach(function (e, i) {
+        eh += "<tr><td class='num'>" + (i + 1) + "</td><td class='mono'>" +
+          Atlas.esc(e[0]) + "</td><td class='mono'>" + Atlas.esc(e[1]) + "</td></tr>";
+      });
+      document.getElementById("c-edges").innerHTML = eh;
+
+      document.querySelectorAll("#th-tabs button").forEach(function (b) {
+        b.classList.toggle("active", b.getAttribute("data-th") === cur);
+      });
+    }
+    document.querySelectorAll("#th-tabs button").forEach(function (b) {
+      b.addEventListener("click", function () { cur = b.getAttribute("data-th"); render(); });
+    });
+    render();
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MaleCNS Structural Atlas - Lesion explorer</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/atlas.js"></script>
+</head>
+<body>
+
+<div class="notice"><strong>Please note:</strong> Structural connectivity is not behavior. A wiring diagram shows which routes exist, not what the fly does.</div>
+
+<header class="site">
+  <h1>MaleCNS Structural Atlas</h1>
+  <p class="sub">A structural resilience atlas of the complete male <em>Drosophila</em> central nervous system</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="mincut.html">Min-cut atlas</a>
+  <a href="lesions.html">Lesion explorer</a>
+  <a href="methods.html">Methods and provenance</a>
+  <a href="cite.html">Cite this atlas</a>
+</nav>
+
+<main>
+  <h2>Lesion explorer</h2>
+
+  <div class="exploratory">
+    <span class="tag">EXPLORATORY</span>
+    <p style="margin:8px 0 0">
+      Everything on this page is exploratory. Targeted removals disconnect more
+      sensory-to-motor pairs than random removals in raw counts, but
+      <strong>none of the 24 targeted-versus-random comparisons survived
+      Benjamini-Hochberg FDR correction at alpha 0.05</strong> (smallest raw
+      p about 0.0476, smallest adjusted p about 0.0571). Treat these curves as
+      leads for future work, not as findings.
+    </p>
+  </div>
+
+  <p>
+    Each curve shows the mean number of newly disconnected sensory-to-motor
+    pairs as a fraction of nodes or edges is removed. Random removal is
+    averaged over 20 replicates; targeted rules are single deterministic runs.
+    Degree-matched random controls exist for some targeted runs (see below).
+  </p>
+
+  <div class="card">
+    <div class="controls">
+      <label>Threshold
+        <select id="sel-th">
+          <option value="5">5 synapses</option>
+          <option value="11">11 synapses</option>
+        </select>
+      </label>
+      <label>Remove
+        <select id="sel-el">
+          <option value="nodes">Nodes</option>
+          <option value="edges">Edges</option>
+        </select>
+      </label>
+      <label>Strategy
+        <select id="sel-strat"></select>
+      </label>
+    </div>
+    <p class="loading">Loading atlas data...</p>
+    <div id="lesioncontent" style="display:none">
+      <h3 id="lesion-title"></h3>
+      <table class="stats" id="lesion-table"></table>
+      <div id="control-box"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  MaleCNS Structural Atlas. Numbers generated from the analysis pipeline results;
+  see Methods and provenance. Structural connectivity is not behavior.
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  Atlas.loadData(function (d) {
+    var selTh = document.getElementById("sel-th");
+    var selEl = document.getElementById("sel-el");
+    var selStrat = document.getElementById("sel-strat");
+
+    function refreshStrats() {
+      var t = d.thresholds[selTh.value];
+      var strats = t.lesions[selEl.value];
+      selStrat.innerHTML = "";
+      Object.keys(strats).forEach(function (k) {
+        var o = document.createElement("option");
+        o.value = k; o.textContent = strats[k].label;
+        selStrat.appendChild(o);
+      });
+      render();
+    }
+
+    function render() {
+      var t = d.thresholds[selTh.value];
+      var el = selEl.value, st = selStrat.value;
+      var obj = t.lesions[el][st];
+      document.querySelector(".loading").style.display = "none";
+      document.getElementById("lesioncontent").style.display = "";
+      document.getElementById("lesion-title").textContent =
+        "Threshold " + selTh.value + ": " + obj.element_label + ", " +
+        obj.label.toLowerCase();
+
+      var fracs = Object.keys(obj.curves).sort(function (a, b) { return parseFloat(a) - parseFloat(b); });
+      var h = "<tr><th>Fraction removed</th><th>Mean newly disconnected pairs</th>" +
+        "<th>Mean reachable pairs left</th><th>Replicates</th></tr>";
+      fracs.forEach(function (f) {
+        var c = obj.curves[f];
+        h += "<tr><td class='num'>" + (parseFloat(f) * 100).toFixed(0) + "%</td><td class='num'>" +
+          Atlas.fmtInt(c.mean_newly_disconnected) + "</td><td class='num'>" +
+          Atlas.fmtInt(c.mean_reachable_pairs) + "</td><td class='num'>" +
+          c.n_replicates + "</td></tr>";
+      });
+      document.getElementById("lesion-table").innerHTML = h;
+
+      var cb = document.getElementById("control-box");
+      var ctrls = (t.controls[st] && st !== "random") ? t.controls[st] : null;
+      if (ctrls) {
+        var ch = "<h3>Targeted vs degree-matched random controls</h3>" +
+          "<table class='stats'><tr><th>Fraction</th><th>Targeted loss</th>" +
+          "<th>Control mean loss</th><th>Controls</th><th>Raw p</th></tr>";
+        fracs.forEach(function (f) {
+          var c = ctrls[f];
+          var note = c.note ? " <span class='footnote'>(" + Atlas.esc(c.note) + ")</span>" : "";
+          ch += "<tr><td class='num'>" + (parseFloat(f) * 100).toFixed(0) + "%</td><td class='num'>" +
+            Atlas.fmtInt(c.targeted_loss) + "</td><td class='num'>" +
+            (c.control_mean_loss === null ? "n/a" : Atlas.fmtInt(c.control_mean_loss)) +
+            "</td><td class='num'>" + c.n_controls + "</td><td class='num'>" +
+            (c.raw_p_value === null ? "n/a" : c.raw_p_value.toFixed(4)) + "</td></tr>" + (note ? "<tr><td colspan='5' class='footnote'>" + note + "</td></tr>" : "");
+        });
+        ch += "</table><p class='footnote'>Raw p values are one-sided permutation " +
+          "p values with the +1 correction (20 nulls). None survived FDR correction; " +
+          "see the exploratory notice above.</p>";
+        cb.innerHTML = ch;
+      } else {
+        cb.innerHTML = "<p class='footnote'>No degree-matched controls for random removal: " +
+          "the random curve itself is the baseline.</p>";
+      }
+    }
+
+    selTh.addEventListener("change", render);
+    selEl.addEventListener("change", refreshStrats);
+    selStrat.addEventListener("change", render);
+    refreshStrats();
+  });
+});
+</script>
+</body>
+</html>

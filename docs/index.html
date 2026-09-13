@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MaleCNS Structural Atlas - Overview</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/atlas.js"></script>
+</head>
+<body>
+
+<div class="notice"><strong>Please note:</strong> Structural connectivity is not behavior. A wiring diagram shows which routes exist, not what the fly does.</div>
+
+<header class="site">
+  <h1>MaleCNS Structural Atlas</h1>
+  <p class="sub">A structural resilience atlas of the complete male <em>Drosophila</em> central nervous system</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="mincut.html">Min-cut atlas</a>
+  <a href="lesions.html">Lesion explorer</a>
+  <a href="methods.html">Methods and provenance</a>
+  <a href="cite.html">Cite this atlas</a>
+</nav>
+
+<main>
+  <h2>What this is</h2>
+  <p>
+    This atlas maps the structural fault lines of the male fruit fly central
+    nervous system: how sensory signals can reach motor neurons, where the
+    wiring is thinnest, and what breaks when parts are removed. It is built
+    from the MaleCNS v1.0 connectome (Berg et al., <em>Cell</em> 2026) and the
+    exact outputs of our analysis pipeline. Every number on this site is
+    generated from the same results files as the paper, so the two can never
+    disagree.
+  </p>
+  <p>
+    Two synapse thresholds are shown throughout. An edge between two neurons is
+    kept only if it carries at least that many synapses: <strong>5</strong>,
+    the common weak-connection cutoff, and <strong>11</strong>, the noise
+    threshold used in the MaleCNS paper itself.
+  </p>
+
+  <h2>Key numbers</h2>
+  <div class="card">
+    <p class="loading">Loading atlas data...</p>
+    <table class="stats" id="keystats" style="display:none">
+      <tr><th></th><th>Threshold 5</th><th>Threshold 11</th></tr>
+      <tr><td>Graph nodes (effective)</td><td class="num" id="k-nodes-5"></td><td class="num" id="k-nodes-11"></td></tr>
+      <tr><td>Directed edges</td><td class="num" id="k-edges-5"></td><td class="num" id="k-edges-11"></td></tr>
+      <tr><td>Sensory-to-motor reachability</td><td class="num" id="k-reach-5"></td><td class="num" id="k-reach-11"></td></tr>
+      <tr><td>Mean edge-disjoint paths (sampled)</td><td class="num" id="k-dp-5"></td><td class="num" id="k-dp-11"></td></tr>
+      <tr><td>Minimum cut value (sensory to motor)</td><td class="num" id="k-mcv-5"></td><td class="num" id="k-mcv-11"></td></tr>
+      <tr><td>Edges in the minimum cut</td><td class="num" id="k-mce-5"></td><td class="num" id="k-mce-11"></td></tr>
+    </table>
+    <p class="footnote" id="node-footnote" style="display:none">
+      Node counts: the threshold 11 graph is stored with 173,023 vertices, but
+      6,149 of them have no edge of weight 11 or more, so the effective count
+      shown here is 166,874. See Methods for the full node-count reconciliation.
+    </p>
+  </div>
+
+  <h2>How to read this atlas</h2>
+  <div class="card">
+    <h3>Min-cut atlas</h3>
+    <p>
+      The exact minimum sets of edges whose removal disconnects all
+      sensory-to-motor routes. These are mathematical facts about the graph,
+      computed exactly, not statistical claims. Start here for the hard
+      structural findings.
+    </p>
+    <h3>Lesion explorer</h3>
+    <p>
+      What happens when nodes or edges are removed at random versus removed by
+      targeting rules (high out-degree, approximate betweenness, cut
+      membership, edge weight). <strong>These comparisons are exploratory.</strong>
+      None of the targeted-versus-random tests survived correction for multiple
+      comparisons, so treat every pattern on that page as a lead for future
+      work, not a finding.
+    </p>
+  </div>
+
+  <h2>Provenance</h2>
+  <div class="card">
+    <p>
+      Data: <strong>MaleCNS v1.0</strong>, released 2026-06-08 under CC BY,
+      via <span class="mono">neuprint.janelia.org</span> (dataset
+      <span class="mono">male-cns:v1.0</span>).
+    </p>
+    <p>
+      Paper: Berg et al., "Sexual dimorphism in the complete Drosophila male
+      central nervous system connectome", <em>Cell</em> 189(18), 2026.
+      DOI: <span class="mono">10.1016/j.cell.2026.08.015</span>
+    </p>
+    <p class="footnote">
+      Analysis code and full results:
+      <a href="https://github.com/akramahmed1/malecns-fault-lines">github.com/akramahmed1/malecns-fault-lines</a>
+    </p>
+  </div>
+</main>
+
+<footer>
+  MaleCNS Structural Atlas. Numbers generated from the analysis pipeline results;
+  see Methods and provenance. Structural connectivity is not behavior.
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  Atlas.loadData(function (d) {
+    var t5 = d.thresholds["5"], t11 = d.thresholds["11"];
+    function set(id, v) { document.getElementById(id).textContent = v; }
+    set("k-nodes-5", Atlas.fmtInt(t5.graph.n_nodes_effective));
+    set("k-nodes-11", Atlas.fmtInt(t11.graph.n_nodes_effective));
+    set("k-edges-5", Atlas.fmtInt(t5.graph.n_edges));
+    set("k-edges-11", Atlas.fmtInt(t11.graph.n_edges));
+    set("k-reach-5", Atlas.pct(t5.reachability.fraction_reachable) +
+      " (" + Atlas.fmtInt(t5.reachability.reachable_pairs) + " of " +
+      Atlas.fmtInt(t5.reachability.total_pairs) + " pairs)");
+    set("k-reach-11", Atlas.pct(t11.reachability.fraction_reachable) +
+      " (" + Atlas.fmtInt(t11.reachability.reachable_pairs) + " of " +
+      Atlas.fmtInt(t11.reachability.total_pairs) + " pairs)");
+    set("k-dp-5", Atlas.fmtFloat(t5.disjoint_paths.mean, 2));
+    set("k-dp-11", Atlas.fmtFloat(t11.disjoint_paths.mean, 2));
+    set("k-mcv-5", Atlas.fmtInt(t5.mincut.value));
+    set("k-mcv-11", Atlas.fmtInt(t11.mincut.value));
+    set("k-mce-5", Atlas.fmtInt(t5.mincut.n_cut_edges));
+    set("k-mce-11", Atlas.fmtInt(t11.mincut.n_cut_edges));
+    document.querySelector(".loading").style.display = "none";
+    document.getElementById("keystats").style.display = "";
+    document.getElementById("node-footnote").style.display = "";
+  });
+});
+</script>
+</body>
+</html>

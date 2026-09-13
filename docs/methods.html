@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MaleCNS Structural Atlas - Methods and provenance</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/atlas.js"></script>
+</head>
+<body>
+
+<div class="notice"><strong>Please note:</strong> Structural connectivity is not behavior. A wiring diagram shows which routes exist, not what the fly does.</div>
+
+<header class="site">
+  <h1>MaleCNS Structural Atlas</h1>
+  <p class="sub">A structural resilience atlas of the complete male <em>Drosophila</em> central nervous system</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="mincut.html">Min-cut atlas</a>
+  <a href="lesions.html">Lesion explorer</a>
+  <a href="methods.html">Methods and provenance</a>
+  <a href="cite.html">Cite this atlas</a>
+</nav>
+
+<main>
+  <h2>Methods and provenance</h2>
+
+  <h3>Data provenance</h3>
+  <div class="card">
+    <p>
+      All analysis starts from <strong>MaleCNS v1.0</strong>, the complete male
+      <em>Drosophila</em> central nervous system connectome, released
+      2026-06-08 under CC BY and queried from
+      <span class="mono">neuprint.janelia.org</span> (dataset
+      <span class="mono">male-cns:v1.0</span>).
+    </p>
+    <p>
+      Reference paper: Berg et al., "Sexual dimorphism in the complete
+      Drosophila male central nervous system connectome",
+      <em>Cell</em> 189(18), 2026. DOI:
+      <span class="mono">10.1016/j.cell.2026.08.015</span>
+    </p>
+    <p>
+      Raw tables: 176,422 neuron records; 25,862,574 directed edges at weight 1
+      and above; 6,287,789 at weight 5 and above. Edge weight is the neuPrint
+      <span class="mono">ConnectsTo.weight</span> property (synapse count).
+    </p>
+  </div>
+
+  <h3>Pipeline</h3>
+  <div class="card">
+    <p>
+      The battery is a Python pipeline built on igraph (C-backed, the only
+      practical choice at this scale). Stages, in order:
+    </p>
+    <ol>
+      <li><strong>Graph build.</strong> Directed weighted graphs at synapse
+        thresholds 5 and 11 (edges kept when weight is at least the threshold).
+        Self-loops removed after construction: 40 at threshold 5, 11 at
+        threshold 11.</li>
+      <li><strong>Reachability.</strong> Exact sensory-to-motor pair counts via
+        condensation bitsets: 26,972 in-graph sensory neurons by 2,232 in-graph
+        motor neurons, 60,201,504 pairs. Hop-limited fractions and mean
+        shortest paths sampled over 200 sources.</li>
+      <li><strong>Edge-disjoint paths.</strong> Unit-capacity max flow on 200
+        sampled pairs per threshold.</li>
+      <li><strong>Minimum cut.</strong> Directed s-t min cut between the
+        sensory and motor sets via super source and super sink with
+        infinite-capacity super edges.</li>
+      <li><strong>Lesions.</strong> Node removal (random, out-degree,
+        approximate betweenness, min-cut membership) and edge removal (random,
+        weight) at fractions 1, 2, 5, 10, and 20 percent, tracking newly
+        disconnected pairs; degree-matched random controls via out-degree
+        quantile bins where feasible.</li>
+      <li><strong>Nulls.</strong> Degree-preserving and region-constrained
+        directed rewiring by double-edge swaps, 20 replicates each, weights
+        preserved.</li>
+      <li><strong>Statistics.</strong> Percentile bootstrap confidence
+        intervals, one-sided permutation tests with the +1 correction,
+        Benjamini-Hochberg FDR over 24 tests.</li>
+    </ol>
+    <p class="footnote">
+      Run fingerprint: config hash <span class="mono" id="m-config"></span>;
+      compute time <span id="m-elapsed"></span>. Full code:
+      <a href="https://github.com/akramahmed1/malecns-fault-lines">github.com/akramahmed1/malecns-fault-lines</a>
+    </p>
+  </div>
+
+  <h3>Reproducibility audit</h3>
+  <div class="card">
+    <p>
+      An independent audit (2026-09-13, fresh pandas checks, no pipeline code)
+      confirmed every headline number: edge counts, self-loop counts, node
+      counts, and the reconciliation with the paper below. Reachability,
+      min-cut, lesion, and statistics code was reviewed but not re-implemented
+      from scratch.
+    </p>
+    <h3>Node-count reconciliation</h3>
+    <table class="stats">
+      <tr><th>Count</th><th>Value</th><th>Meaning</th></tr>
+      <tr><td>Neuron records downloaded</td><td class="num">176,422</td><td>Every <span class="mono">:Neuron</span> node in neuPrint male-cns:v1.0</td></tr>
+      <tr><td>Paper headline neurons</td><td class="num">166,700</td><td>Annotated neurons only; 9,722 unannotated records excluded</td></tr>
+      <tr><td>Battery graph nodes</td><td class="num">173,023</td><td>Distinct endpoints of edges with weight 5 or more</td></tr>
+      <tr><td>Threshold 11 effective nodes</td><td class="num">166,874</td><td>173,023 minus 6,149 isolated vertices with no weight 11+ edge</td></tr>
+    </table>
+    <p class="footnote">
+      Known wart, documented not hidden: the threshold 11 graph is stored with
+      173,023 vertices including 6,149 isolates, so its headline node count
+      overstates the effective graph, and threshold 11 lesion fractions are
+      computed over a pool that includes isolates (mildly diluting
+      targeted-removal fractions). The atlas shows the effective count
+      166,874 wherever node counts appear.
+    </p>
+  </div>
+
+  <h3>What the atlas does not claim</h3>
+  <div class="card">
+    <ul>
+      <li>No lesion comparison on this site is statistically significant after
+        FDR correction. They are exploratory.</li>
+      <li>Structural routes are not behavior. Nothing here predicts what the
+        fly does.</li>
+      <li>Threshold 0 (the full 25.6M-edge graph) was not run; only thresholds
+        5 and 11 are shown.</li>
+      <li>Nothing here claims to be the first of anything.</li>
+    </ul>
+  </div>
+</main>
+
+<footer>
+  MaleCNS Structural Atlas. Numbers generated from the analysis pipeline results;
+  see Methods and provenance. Structural connectivity is not behavior.
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  Atlas.loadData(function (d) {
+    document.getElementById("m-config").textContent = d.meta.config_hash.slice(0, 12);
+    document.getElementById("m-elapsed").textContent =
+      Math.round(d.meta.elapsed_seconds) + " seconds of pipeline compute";
+  });
+});
+</script>
+</body>
+</html>

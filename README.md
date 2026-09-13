@@ -4,8 +4,13 @@ A lesion and minimum-cut benchmark of sensory-to-motor structural resilience on
 the complete male *Drosophila* central nervous system connectome (MaleCNS v1.0).
 
 Status: **preliminary, unpublished research code and results.** Nothing here is
-peer reviewed. Treat all findings as provisional until sensitivity checks and
-an independent reproducibility audit are complete.
+peer reviewed. An independent reproducibility audit is complete
+(`pipeline/AUDIT_REPORT.md`); sensitivity checks (e.g. threshold 0) are still
+pending, so treat findings as provisional.
+
+Interactive companion: **MaleCNS Structural Atlas**,
+`https://akramahmed1.github.io/malecns-fault-lines/`
+(source in `docs/`, generated from the same results files as the paper).
 
 ## What this is
 
