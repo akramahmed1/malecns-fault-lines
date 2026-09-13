@@ -1,0 +1,7 @@
+{
+  "files": {
+    "edges": "99a30a70ddf20fe69a2c595c52e88be3ade1a9dca5ad901fef10bc5aae7e3ef4",
+    "neurons.csv": "efb7993926f22cfc4fc6a036bd7dd8b96d014133bd7fd059386a5fc320f3608f"
+  },
+  "note": "SYNTHETIC validation fixtures for checkpoint/resume testing. Not real data."
+}

@@ -1,0 +1,10 @@
+REAL MaleCNS v1.0 sensory/motor mapping
+==================================================
+
+Sensory/motor sets defined from the neurons.csv superclass column (MaleCNS v1.0 annotations, pulled live from neuprint.janelia.org).
+Sensory superclasses: cb_sensory, ol_sensory, vnc_sensory, sensory_ascending, sensory_descending, visual_projection, visual_centrifugal.
+Motor superclasses: descending_neuron, cb_motor, vnc_motor, vnc_efferent, cb_efferent, efferent_ascending, efferent_descending.
+Excluded by design: intrinsic superclasses (cb_intrinsic, ol_intrinsic, vnc_intrinsic: neither sensory input nor motor output), neurons with empty superclass (9,722: unannotated), ascending_neuron (1,846: VNC to brain relay, not primary sensory transduction; kept out of the primary sensory set), endocrine/ENS classes (modulatory, not sensorimotor pathways), and *_tbc superclasses (unconfirmed annotations). Only neurons present in the thresholded graph are analyzed; counts of in-graph vs annotated neurons are reported below.
+
+sensory neurons annotated: 27649
+motor neurons annotated: 2239

@@ -1,0 +1,57 @@
+# Configuration for the REAL MaleCNS v1.0 battery (thresholds 5 and 11).
+# Scale adaptations vs config.yaml are documented in run_real.py and the run
+# manifest. Every parameter lives here; each run records the SHA256 of this
+# file in manifest.json.
+
+study: fault-lines-fly-brain
+dataset: malecns-v1.0
+data_real: true   # REAL MaleCNS v1.0 data from neuprint.janelia.org, not synthetic
+
+edges_csv: data/edges_w5.csv
+neurons_csv: data/neurons.csv
+
+# Edge-weight thresholds: minimum synapses per edge.
+# 5 = common weak-connection cutoff (Cell STAR Methods: 6.24M edges in v1.0).
+# 11 = MaleCNS noise threshold (Cell: edges below 11 treated as noisy).
+# Threshold 0 (unfiltered, 25.6M edges) is out of scope for this run.
+thresholds: [5, 11]
+
+# Sensory/motor sets from the neurons.csv superclass column (see data-dictionary.md).
+sensory_superclasses: [cb_sensory, ol_sensory, vnc_sensory, sensory_ascending,
+  sensory_descending, visual_projection, visual_centrifugal]
+motor_superclasses: [descending_neuron, cb_motor, vnc_motor, vnc_efferent,
+  cb_efferent, efferent_ascending, efferent_descending]
+# Categorical node label for the region-constrained null.
+region_attr: superclass
+
+lesion_fractions: [0.01, 0.02, 0.05, 0.10, 0.20]
+lesion_replicates: 20
+node_strategies: [random, out_degree, betweenness_approx, mincut_membership]
+edge_strategies: [random, weight]  # betweenness_approx dropped for edges: edge
+# betweenness (cutoff 2) on 6.29M edges did not finish in 4.5+ hours
+# (single-threaded C), exceeding the VM reboot window; node betweenness
+# completes in ~9 minutes and is retained.
+
+null_models: [degree_preserving, region_constrained]
+null_replicates: 20
+edge_swap_factor: 1   # attempted double-edge swaps per null replicate = factor * n_edges
+
+seeds:
+  global: 20260912
+  test_graph: 42
+  lesions: 101
+  nulls: 202
+  stats: 303
+
+hop_limits: [2, 3, 4]
+# Scale adaptation: cutoff 3 -> 2. Full cutoff-3 betweenness on 173k nodes /
+# 6.29M edges did not finish in 6+ minutes (single-threaded C). Cutoff-2 node
+# betweenness completes in ~9 minutes and is retained; cutoff-2 EDGE
+# betweenness on 6.29M edges did not finish in 4.5+ hours and was dropped
+# from the edge strategies (see edge_strategies above).
+betweenness_cutoff: 2
+max_disjoint_pairs: 200 # cap on sampled (source, target) pairs for edge-disjoint path counts
+
+fdr_alpha: 0.05
+bootstrap_replicates: 1000
+degree_match_bins: 10

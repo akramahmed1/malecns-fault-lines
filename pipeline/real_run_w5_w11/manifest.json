@@ -1,0 +1,134 @@
+{
+  "study": "fault-lines-fly-brain",
+  "dataset": "malecns-v1.0",
+  "data": "REAL MaleCNS v1.0 data from neuprint.janelia.org (male-cns:v1.0). Not synthetic.",
+  "timestamp_utc": "2026-09-13T06:00:26.086457+00:00",
+  "config_hash": "e78136c8b96c6a9ab7bb68381174daf414ee739b5d5b9e0c1472dd6c8fe747be",
+  "config": {
+    "study": "fault-lines-fly-brain",
+    "dataset": "malecns-v1.0",
+    "data_real": true,
+    "edges_csv": "data/edges_w5.csv",
+    "neurons_csv": "data/neurons.csv",
+    "thresholds": [
+      5,
+      11
+    ],
+    "sensory_superclasses": [
+      "cb_sensory",
+      "ol_sensory",
+      "vnc_sensory",
+      "sensory_ascending",
+      "sensory_descending",
+      "visual_projection",
+      "visual_centrifugal"
+    ],
+    "motor_superclasses": [
+      "descending_neuron",
+      "cb_motor",
+      "vnc_motor",
+      "vnc_efferent",
+      "cb_efferent",
+      "efferent_ascending",
+      "efferent_descending"
+    ],
+    "region_attr": "superclass",
+    "lesion_fractions": [
+      0.01,
+      0.02,
+      0.05,
+      0.1,
+      0.2
+    ],
+    "lesion_replicates": 20,
+    "node_strategies": [
+      "random",
+      "out_degree",
+      "betweenness_approx",
+      "mincut_membership"
+    ],
+    "edge_strategies": [
+      "random",
+      "weight"
+    ],
+    "null_models": [
+      "degree_preserving",
+      "region_constrained"
+    ],
+    "null_replicates": 20,
+    "edge_swap_factor": 1,
+    "seeds": {
+      "global": 20260912,
+      "test_graph": 42,
+      "lesions": 101,
+      "nulls": 202,
+      "stats": 303
+    },
+    "hop_limits": [
+      2,
+      3,
+      4
+    ],
+    "betweenness_cutoff": 2,
+    "max_disjoint_pairs": 200,
+    "fdr_alpha": 0.05,
+    "bootstrap_replicates": 1000,
+    "degree_match_bins": 10
+  },
+  "seeds": {
+    "global": 20260912,
+    "test_graph": 42,
+    "lesions": 101,
+    "nulls": 202,
+    "stats": 303
+  },
+  "package_versions": {
+    "python": "3.12.3",
+    "igraph": "1.0.0",
+    "numpy": "1.26.4",
+    "scipy": "1.11.4",
+    "pandas": "2.1.4",
+    "yaml": "6.0.1"
+  },
+  "inputs": {
+    "edges_w5.csv": {
+      "sha256": "60b4adb6f3b9f96a290e192f23e2822ea3ab96020edef5ed6cd5ff354cd40182",
+      "source": "data/manifest.json (pull 2026-09-12)",
+      "verified": true
+    },
+    "neurons.csv": {
+      "sha256": "41b08d255e7a41747af40a5559b139db7efeefb21096cd8285c44c19915e7681",
+      "source": "data/manifest.json (pull 2026-09-12)",
+      "verified": true
+    },
+    "self_loops_dropped_per_threshold": {
+      "5": 40,
+      "11": 11
+    },
+    "sensory_motor_mapping": "real_run_w5_w11/sensory_motor_mapping.txt"
+  },
+  "scale_adaptations": [
+    "reachability via SCC condensation + bitset DP (reachability_fast), verified exactly equivalent to reachability.sensory_motor_reachability on random graphs and on the real graph baseline",
+    "lesion metrics via the same fast path (5.2 s vs 303 s per evaluation)",
+    "betweenness_cutoff 3 -> 2 (cutoff 3 did not finish on 173k nodes)",
+    "edge_swap_factor 10 -> 1 for null rewiring",
+    "region-constrained rewiring uses group-restricted proposals (_rewire_constrained_grouped): the rejection sampler wasted ~75% of proposals on region-incompatible pairs; the grouped chain is symmetric and targets the same uniform null distribution, validated for degree and region-pair-count preservation",
+    "undirected global min cut skipped: Stoer-Wagner infeasible at 173k nodes; diagnostic only, not a failure-point claim",
+    "threshold 0 (unfiltered 25.6M edges) out of scope for this run",
+    "shortest-path summaries on a seeded 200-source sample (exact per pair)"
+  ],
+  "outputs": [
+    "run.log",
+    "sensory_motor_mapping.txt",
+    "results_summary.json",
+    "results_summary.md",
+    "manifest.json",
+    "checkpoints/"
+  ],
+  "reproducibility": {
+    "checkpointing": "per-unit checkpoints in outdir/checkpoints/ (atomic write + fsync). Units: one threshold phase per threshold (graph, orders, baseline analyses), one lesion unit per (element, strategy), one control unit per (strategy, fraction), one null unit per (model, replicate). Finished units are skipped on resume.",
+    "seeding_scheme": "each stochastic checkpoint unit draws from its own numpy default_rng stream seeded by unit_seed(master_seed, unit_parts), where unit_seed is SHA-256('master|part1|...') truncated to 32 bits (stable across processes and platforms). Lesion units use seeds.lesions with parts ('lesion', threshold, element, strategy); control units use seeds.lesions with parts ('control', threshold, strategy, fraction); null replicates keep the original seeds.nulls + replicate-index scheme. Reachability, disjoint-path sampling, and bootstrap calls keep their fixed per-call seeds['stats'] seed. Because no unit consumes another unit's stream, a resumed run is bit-identical to an uninterrupted run.",
+    "determinism_fixes": "lesions.node_removal_order mincut_membership now sorts member indices (previously iterated a set of strings, whose order varies with PYTHONHASHSEED). run timestamp is fixed at first launch in checkpoints/run_state.json so resumed runs keep it. results elapsed_seconds is the only wall-clock field and naturally differs between runs."
+  },
+  "notes": "Real-data run. No synthetic test graph used."
+}

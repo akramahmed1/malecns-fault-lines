@@ -1,0 +1,7 @@
+data/*.csv
+data_val/*.csv
+checkpoints/
+*.log
+__pycache__/
+*.pyc
+.DS_Store

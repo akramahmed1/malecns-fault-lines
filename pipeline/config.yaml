@@ -1,0 +1,36 @@
+# Configuration for the Fault Lines in a Fly Brain analysis pipeline.
+# Every parameter lives here. Each run records the SHA256 of this file in manifest.json.
+# Grounded in ../data-dictionary.md: thresholds 0/5/11, MaleCNS v1.0 scale
+# (166,700 neurons, 25.6M edges), noise threshold <11 synapses.
+
+study: fault-lines-fly-brain
+dataset: synthetic-test-graph   # production value: malecns-v1.0
+
+# Edge-weight thresholds: minimum synapses per edge.
+# 0 = unfiltered; 5 = common weak-connection cutoff (6.24M edges in MaleCNS v1.0,
+#   Cell STAR Methods); 11 = MaleCNS noise threshold, edges below labeled noisy.
+thresholds: [0, 5, 11]
+
+lesion_fractions: [0.01, 0.02, 0.05, 0.10, 0.20]
+lesion_replicates: 20
+node_strategies: [random, out_degree, betweenness_approx, mincut_membership]
+edge_strategies: [random, weight, betweenness_approx]
+
+null_models: [degree_preserving, region_constrained]
+null_replicates: 20
+edge_swap_factor: 10   # attempted double-edge swaps per null replicate = factor * n_edges
+
+seeds:
+  global: 20260912
+  test_graph: 42
+  lesions: 101
+  nulls: 202
+  stats: 303
+
+hop_limits: [2, 3, 4]
+betweenness_cutoff: 3   # approximate betweenness uses paths up to this length only
+max_disjoint_pairs: 200 # cap on sampled (source, target) pairs for edge-disjoint path counts
+
+fdr_alpha: 0.05
+bootstrap_replicates: 1000
+degree_match_bins: 10

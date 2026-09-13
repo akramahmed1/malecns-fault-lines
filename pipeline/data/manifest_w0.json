@@ -1,0 +1,11 @@
+{
+  "dataset": "male-cns:v1.0",
+  "min_weight": 0,
+  "edge_chunks": 1024,
+  "neuron_chunks": 32,
+  "finished_utc": "2026-09-13T05:56:20Z",
+  "files": {
+    "neurons.csv": "41b08d255e7a41747af40a5559b139db7efeefb21096cd8285c44c19915e7681",
+    "edges": "440a096c8110c25b9bc0153c6925112924edd86bac5c999d1701795e95d6702e"
+  }
+}

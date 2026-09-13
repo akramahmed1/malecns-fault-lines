@@ -1,0 +1,22 @@
+OK: required commands found
+OK: input files found
+OK: prepared validation output directory: /home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate
+size=232350 bytes
+Pages:           10
+Page size:       594.96 x 841.92 pts (A4)
+OK: PDF integrity and metadata look valid
+imgs=0 data-uri-srcs=0
+css-urls=0 css-data-uris=0
+OK: HTML image references are embedded
+/home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate/page-01.png 177302 bytes
+/home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate/page-02.png 282876 bytes
+/home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate/page-03.png 245482 bytes
+/home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate/page-04.png 190971 bytes
+/home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate/page-05.png 267054 bytes
+/home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate/page-06.png 194081 bytes
+/home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate/page-07.png 207497 bytes
+/home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate/page-08.png 227945 bytes
+/home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate/page-09.png 230467 bytes
+/home/hatch/workspace/your_files/fly-connectome-paper-outline/.src/validate/page-10.png 293910 bytes
+OK: rendered 10 validation PNG(s) from the PDF
+PASS: mechanical PDF validation complete; inspect rendered PNGs before returning the artifact.

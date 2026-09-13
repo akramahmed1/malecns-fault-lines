@@ -1,0 +1,89 @@
+{
+  "study": "fault-lines-fly-brain",
+  "dataset": "synthetic-test-graph",
+  "timestamp_utc": "2026-09-12T15:34:55.367160+00:00",
+  "config_hash": "c7102bd50e44c14c31a29940fe8fc5749edc06b131b631e8c8a26ea3e6627f4b",
+  "config": {
+    "study": "fault-lines-fly-brain",
+    "dataset": "synthetic-test-graph",
+    "thresholds": [
+      0,
+      5,
+      11
+    ],
+    "lesion_fractions": [
+      0.01,
+      0.02,
+      0.05,
+      0.1,
+      0.2
+    ],
+    "lesion_replicates": 20,
+    "node_strategies": [
+      "random",
+      "out_degree",
+      "betweenness_approx",
+      "mincut_membership"
+    ],
+    "edge_strategies": [
+      "random",
+      "weight",
+      "betweenness_approx"
+    ],
+    "null_models": [
+      "degree_preserving",
+      "region_constrained"
+    ],
+    "null_replicates": 20,
+    "edge_swap_factor": 10,
+    "seeds": {
+      "global": 20260912,
+      "test_graph": 42,
+      "lesions": 101,
+      "nulls": 202,
+      "stats": 303
+    },
+    "hop_limits": [
+      2,
+      3,
+      4
+    ],
+    "betweenness_cutoff": 3,
+    "max_disjoint_pairs": 200,
+    "fdr_alpha": 0.05,
+    "bootstrap_replicates": 1000,
+    "degree_match_bins": 10
+  },
+  "seeds": {
+    "global": 20260912,
+    "test_graph": 42,
+    "lesions": 101,
+    "nulls": 202,
+    "stats": 303
+  },
+  "package_versions": {
+    "python": "3.12.3",
+    "igraph": "1.0.0",
+    "numpy": "1.26.4",
+    "scipy": "1.11.4",
+    "pandas": "2.1.4",
+    "yaml": "6.0.1"
+  },
+  "inputs": {
+    "test_edges.csv": "99a30a70ddf20fe69a2c595c52e88be3ade1a9dca5ad901fef10bc5aae7e3ef4",
+    "test_nodes.csv": "ff0a2170e388d00dbc2cb0f7b09f453deefbc2820cf8d841dc9671aa336c87d6",
+    "ground_truth.json": "f590ad4f8e956655dbfc455994f4cb4f8aee842558793874cc137a55f4d7dfb7",
+    "ground_truth_verified": true,
+    "synthetic": true
+  },
+  "outputs": [
+    "run.log",
+    "test_edges.csv",
+    "test_nodes.csv",
+    "ground_truth.json",
+    "results_summary.json",
+    "results_summary.md",
+    "manifest.json"
+  ],
+  "notes": "Synthetic test-graph run. No MaleCNS data used."
+}

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fault Lines in a Fly Brain - Paper Outline</title>
+<style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+:root { --ink:#172033; --muted:#596579; --line:#d8dee8; --navy:#173f5f; --blue:#2b6f93; --pale:#edf5f8; --gold:#b47b24; --paper:#ffffff; }
+html,body { margin:0; background:#eef1f4; font-family:'Liberation Sans','Noto Sans',sans-serif; color:var(--ink); }
+.page { width:210mm; height:297mm; min-height:297mm; padding:17mm 18mm 15mm; background:var(--paper); position:relative; overflow:hidden; page-break-after:always; }
+.page:last-child { page-break-after:auto; }
+.cover { padding:24mm 22mm 18mm; }
+.kicker { color:var(--blue); font-size:9pt; font-weight:700; letter-spacing:1.7px; text-transform:uppercase; margin-bottom:8mm; }
+h1 { font-family:'Noto Serif','Liberation Serif',serif; font-size:31pt; line-height:1.08; margin:0 0 7mm; letter-spacing:-0.4px; color:#102c43; }
+h2 { font-family:'Noto Serif','Liberation Serif',serif; font-size:20pt; line-height:1.18; margin:0 0 5mm; color:#143952; }
+h3 { font-size:11.3pt; margin:0 0 2.2mm; color:#173f5f; }
+p { font-size:10.2pt; line-height:1.46; margin:0 0 3.4mm; }
+ul,ol { margin:2mm 0 4mm 5mm; padding-left:5mm; }
+li { font-size:9.8pt; line-height:1.38; margin:0 0 1.8mm; }
+strong { color:#102c43; }
+a { color:#175f87; text-decoration:none; }
+.small { font-size:8.7pt; line-height:1.36; color:var(--muted); }
+.lede { font-family:'Noto Serif','Liberation Serif',serif; font-size:14pt; line-height:1.42; color:#2b3e51; }
+.rule { height:1px; background:var(--line); margin:5mm 0; }
+.callout { border-left:3px solid var(--gold); padding:3.3mm 4.5mm; background:#fbf7ef; margin:4mm 0; }
+.callout p:last-child { margin-bottom:0; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:5mm; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:4mm; }
+.card { border:1px solid var(--line); border-radius:2mm; padding:4mm; background:#fff; break-inside:avoid; }
+.card p:last-child,.card ul:last-child { margin-bottom:0; }
+.metric { font-family:'Noto Serif','Liberation Serif',serif; font-size:20pt; color:var(--navy); font-weight:700; margin-bottom:1mm; }
+.label { font-size:8.4pt; color:var(--muted); line-height:1.3; }
+.tag { display:inline-block; font-size:8.2pt; font-weight:700; color:var(--navy); background:var(--pale); padding:1.2mm 2.2mm; margin:0 1mm 1.5mm 0; border-radius:1mm; }
+.flow { display:grid; grid-template-columns:repeat(4,1fr); gap:3mm; margin:5mm 0; }
+.step { min-height:27mm; background:var(--pale); border-top:2px solid var(--blue); padding:3.5mm; font-size:9.2pt; line-height:1.35; }
+.step b { display:block; margin-bottom:1.2mm; color:var(--navy); }
+table { width:100%; border-collapse:collapse; margin:3mm 0 4mm; break-inside:avoid; }
+th { text-align:left; background:#eef3f6; color:#173f5f; font-size:8.6pt; padding:2.2mm; border-bottom:1px solid #bbc7d1; }
+td { vertical-align:top; font-size:8.7pt; line-height:1.3; padding:2.2mm; border-bottom:1px solid #e1e6eb; }
+.pagehead { font-size:8.1pt; color:#708092; letter-spacing:.9px; text-transform:uppercase; border-bottom:1px solid var(--line); padding-bottom:2.3mm; margin-bottom:6mm; }
+.footer { position:absolute; left:18mm; right:18mm; bottom:8mm; display:flex; justify-content:space-between; font-size:8pt; color:#7a8794; }
+.cover .footer { left:22mm; right:22mm; }
+.coverbox { margin-top:18mm; padding:8mm; background:#f3f7f8; border:1px solid #d6e2e8; }
+.bigline { width:24mm; height:3px; background:var(--gold); margin:7mm 0; }
+.note { padding:3mm 4mm; background:#f5f7fa; color:#4f5c6c; font-size:8.8pt; line-height:1.38; }
+.check { color:#136b4d; font-weight:700; }
+.warn { color:#8a5a14; font-weight:700; }
+.ref { font-size:8.5pt; line-height:1.32; margin-bottom:2.5mm; }
+</style>
+</head>
+<body>
+<section class="page cover">
+  <div class="kicker">Working paper blueprint | September 2026</div>
+  <h1>Fault Lines in a Fly Brain</h1>
+  <p class="lede">Mapping structural resilience in sensory-to-motor pathways across the complete male <i>Drosophila</i> central nervous system</p>
+  <div class="bigline"></div>
+  <p style="font-size:12pt;max-width:145mm;">A focused, defensible study built around the MaleCNS v1.0 connectome. The paper asks a simple question: which parts of the fly nervous system can lose connections and keep a route from sensation to action, and which parts fail when only a few critical neurons are removed?</p>
+  <div class="coverbox">
+    <div class="grid3">
+      <div><div class="metric">166,700</div><div class="label">neurons reported in the final peer-reviewed Cell article [1]</div></div>
+      <div><div class="metric">11,710</div><div class="label">neuron types reported in the final peer-reviewed Cell article [1]</div></div>
+      <div><div class="metric">124.2M</div><div class="label">proofread synaptic connections reported in the final Cell Results section [1]</div></div>
+    </div>
+    <div class="rule"></div>
+    <p><strong>Recommended paper type:</strong> applied computational neuroscience and network analytics</p>
+    <p><strong>Primary contribution:</strong> a reproducible lesion and redundancy benchmark for structural sensorimotor pathways</p>
+    <p><strong>Practical fit:</strong> no wet lab, no claim of biological behavior, and a clear path to code, figures, and an interactive companion</p>
+  </div>
+  <div class="footer"><span>Prepared for Akram Mohammed</span><span>Paper outline</span></div>
+</section>
+
+<section class="page">
+  <div class="pagehead">01 | Research decision</div>
+  <h2>The candidate question is resilience, not whether a connectome can play a game</h2>
+  <p class="lede">The dataset is new, but connectome-shaped controllers already exist. A formal literature review must determine whether the proposed whole-CNS resilience study is novel enough to pursue.</p>
+  <div class="callout"><p><strong>Working title:</strong> Fault Lines in a Fly Brain: Mapping Structural Resilience in the Complete Male <i>Drosophila</i> Connectome</p></div>
+  <div class="grid2">
+    <div class="card"><h3>What the paper does</h3><ul><li>Builds a directed, weighted graph from MaleCNS v1.0.</li><li>Traces well-annotated sensory populations to descending and motor populations.</li><li>Measures redundant routes, minimum cuts, and pathway loss under simulated lesions.</li><li>Compares biological wiring with controlled rewired graphs.</li><li>Publishes code, processed graph tables, and an interactive pathway viewer.</li></ul></div>
+    <div class="card"><h3>What the paper does not claim</h3><ul><li>That synapse counts reveal real-time neural activity.</li><li>That a static wiring diagram reproduces learning or behavior.</li><li>That one male specimen represents the full species.</li><li>That a simulated lesion predicts a clinical or biological outcome.</li><li>That structural sex differences alone explain behavior.</li></ul></div>
+  </div>
+  <h3 style="margin-top:5mm;">The gap this fills</h3>
+  <p>The final Cell article already includes sensorimotor max-flow analysis [1], so basic flow analysis is not a novel contribution. Two 2026 arXiv preprints add relevant prior art: FlyGM reports a connectome-shaped controller for simulated fly locomotion [5], while FLYNN reports robustness experiments in fly-topology robot navigation [6]. The distinct lesion-response and structural-resilience benchmark remains a candidate contribution until a formal literature review establishes novelty.</p>
+  <div class="note"><strong>Novelty gate:</strong> Run a dated search across peer-reviewed databases and preprint servers before coding. If an existing study already reports the same MaleCNS whole-CNS lesion benchmark, narrow the study to a modality, such as vision-to-flight control, or to verified dimorphic versus shared circuitry.</div>
+  <div class="footer"><span>Fault Lines in a Fly Brain</span><span>2</span></div>
+</section>
+<section class="page">
+  <div class="pagehead">02 | Research questions</div>
+  <h2>Four tests turn the idea into a falsifiable study</h2>
+  <table>
+    <thead><tr><th style="width:12%">ID</th><th style="width:35%">Question</th><th>Testable hypothesis</th></tr></thead>
+    <tbody>
+      <tr><td><strong>RQ1</strong></td><td>How redundant are sensory-to-motor routes across annotated modalities?</td><td><strong>H1:</strong> Route redundancy will differ by modality after controlling for graph size and degree.</td></tr>
+      <tr><td><strong>RQ2</strong></td><td>Which neurons, cell types, and regions produce the largest structural failures when removed?</td><td><strong>H2:</strong> Removing high-dominator or high-flow-betweenness nodes will reduce reachability more than random or degree-matched removal.</td></tr>
+      <tr><td><strong>RQ3</strong></td><td>Does biological wiring preserve sensorimotor communication better than plausible null graphs?</td><td><strong>H3:</strong> The observed graph will retain more weighted reachability and disjoint routes than degree-preserving rewires at matched lesion levels.</td></tr>
+      <tr><td><strong>RQ4</strong></td><td>Are dimorphic and male-specific pathways organized around more localized bottlenecks than shared pathways?</td><td><strong>H4:</strong> Candidate dimorphic subnetworks will show higher concentration of path dependence. This remains exploratory and must be limited to cross-sex mappings verified in the paper or official dataset.</td></tr>
+    </tbody>
+  </table>
+  <h3>Primary outcome</h3>
+  <p>The main endpoint is the area under the robustness curve for weighted source-to-target reachability as nodes or edges are removed. Each curve will be reported with confidence intervals from repeated perturbation runs.</p>
+  <h3>Secondary outcomes</h3>
+  <div class="grid2">
+    <div class="card"><ul><li>Number of vertex-disjoint and edge-disjoint routes</li><li>Minimum vertex and edge cut size</li><li>Weighted shortest-path efficiency</li><li>Communicability between source and target sets</li></ul></div>
+    <div class="card"><ul><li>Fraction of target neurons still reachable</li><li>Critical-node rank stability across metrics</li><li>Effect size against matched null graphs</li><li>Sensitivity to synapse thresholds and edge weights</li></ul></div>
+  </div>
+  <div class="callout"><p><strong>Decision rule:</strong> If H3 is not supported, that is still a useful result. The paper can show that apparent biological robustness is explained by degree distribution rather than a special wiring pattern.</p></div>
+  <div class="footer"><span>Fault Lines in a Fly Brain</span><span>3</span></div>
+</section>
+
+<section class="page">
+  <div class="pagehead">03 | Data and scope</div>
+  <h2>MaleCNS v1.0 is rich enough for the analysis, but one specimen sets a hard boundary</h2>
+  <div class="grid3">
+    <div class="card"><div class="metric">1</div><div class="label">fully reconstructed adult male central nervous system specimen</div></div>
+    <div class="card"><div class="metric">4</div><div class="label">input classes in this plan: neurons, synapses, annotations, spatial regions</div></div>
+    <div class="card"><div class="metric">2</div><div class="label">access modes used in this plan: downloads and programmatic queries</div></div>
+  </div>
+  <h3 style="margin-top:5mm;">Required fields</h3>
+  <table><thead><tr><th>Entity</th><th>Required fields</th><th>Use in analysis</th></tr></thead><tbody>
+    <tr><td>Neuron</td><td>stable body ID, type, class, region, laterality</td><td>Node identity, grouping, and stratified analysis</td></tr>
+    <tr><td>Synapse edge</td><td>pre-neuron, post-neuron, synapse count</td><td>Directed edge and primary weight</td></tr>
+    <tr><td>Functional labels</td><td>sensory, interneuron, descending, motor</td><td>Source, bridge, and target sets</td></tr>
+    <tr><td>Optional biology</td><td>transmitter prediction, fruitless or doublesex label</td><td>Signed or dimorphism-aware sensitivity analyses</td></tr>
+  </tbody></table>
+  <h3>Initial pathway panels</h3>
+  <p>Start only with pathways whose source and target annotations are clear. The visual panel may use Janelia's official R1-R6 to DNg13 visual-to-motor example as a documented case [4]. It is an anatomical pathway example, not evidence that the static connectome reproduces dynamic behavior. Add olfactory, gustatory, mechanosensory, and proprioceptive panels only after an annotation audit confirms usable coverage.</p>
+  <div class="note"><strong>Scope boundary:</strong> The graph represents structural connectivity. Synapse count is a weight proxy, not a measured firing rate. Any dynamic model belongs in a later paper after physiological assumptions can be justified.</div>
+  <div class="footer"><span>Fault Lines in a Fly Brain</span><span>4</span></div>
+</section>
+<section class="page">
+  <div class="pagehead">04 | Analytical method</div>
+  <h2>A four-stage pipeline keeps every result traceable</h2>
+  <div class="flow">
+    <div class="step"><b>1. Ingest</b>Download approved MaleCNS tables, preserve release metadata, and checksum every raw file.</div>
+    <div class="step"><b>2. Audit</b>Check duplicates, orphan IDs, missing labels, edge direction, and synapse-weight distributions.</div>
+    <div class="step"><b>3. Analyze</b>Build pathway subgraphs, calculate resilience metrics, and run lesion experiments.</div>
+    <div class="step"><b>4. Explain</b>Rank bottlenecks, visualize failure routes, and report uncertainty and sensitivity.</div>
+  </div>
+  <h3>Graph construction</h3>
+  <p>Represent every neuron as a node and each documented directed synaptic connection as an edge. Use summed synapse counts as the base edge weight. Do not add electrical-coupling data unless a separate verified source is available, and never force it into the same directed model. Record each filter in a machine-readable manifest.</p>
+  <h3>Threshold plan</h3>
+  <p>Run the primary analysis at a prespecified minimum synapse count chosen after the distribution audit. Repeat it across at least three thresholds, including the unthresholded graph, to show whether conclusions depend on weak edges.</p>
+  <h3>Pathway definitions</h3>
+  <ul>
+    <li><strong>Sources:</strong> modality-specific sensory populations with clear annotations.</li>
+    <li><strong>Targets:</strong> descending neurons for brain-to-cord analysis and motor neurons for end-to-end analysis.</li>
+    <li><strong>Allowed paths:</strong> directed paths within a biologically reasonable hop limit, reported as a sensitivity parameter rather than a hidden rule.</li>
+    <li><strong>Compartments:</strong> full CNS, brain-to-descending, and descending-to-motor segments.</li>
+  </ul>
+  <h3>Null models</h3>
+  <div class="grid2"><div class="card"><p><strong>Degree-preserving rewires</strong> test whether resilience follows simply from each neuron's number of inputs and outputs.</p></div><div class="card"><p><strong>Region-constrained rewires</strong> preserve coarse anatomy while breaking exact neuron-to-neuron structure.</p></div></div>
+  <div class="callout"><p><strong>Reproducibility requirement:</strong> Fix random seeds, save every graph transform, publish environment files, and make all reported figures regenerable from one command.</p></div>
+  <div class="footer"><span>Fault Lines in a Fly Brain</span><span>5</span></div>
+</section>
+
+<section class="page">
+  <div class="pagehead">05 | Experiments</div>
+  <h2>Controlled lesions separate important hubs from ordinary high-degree nodes</h2>
+  <table><thead><tr><th>Experiment</th><th>Perturbation</th><th>Comparison</th><th>Output</th></tr></thead><tbody>
+    <tr><td>E1 Baseline atlas</td><td>None</td><td>Across modalities</td><td>Reachability, path length, disjoint routes</td></tr>
+    <tr><td>E2 Random failure</td><td>Random nodes or edges at rising fractions</td><td>1,000 repeated draws per level</td><td>Robustness curves and uncertainty</td></tr>
+    <tr><td>E3 Targeted attack</td><td>Degree, betweenness, dominator, and flow ranks</td><td>Random and degree-matched removal</td><td>Marginal damage and rank stability</td></tr>
+    <tr><td>E4 Biological groups</td><td>Cell type or region removal</td><td>Size-matched random groups</td><td>Group vulnerability map</td></tr>
+    <tr><td>E5 Null graphs</td><td>Same lesion sets on rewired networks</td><td>Observed graph versus null distribution</td><td>Standardized effect size and permutation p-value</td></tr>
+    <tr><td>E6 Sensitivity</td><td>Threshold, weight rule, hop limit, uncertain labels</td><td>Primary specification</td><td>Conclusion stability</td></tr>
+  </tbody></table>
+  <h3>Statistical plan</h3>
+  <ul>
+    <li>Report median differences, standardized effect sizes, and 95 percent bootstrap confidence intervals.</li>
+    <li>Use permutation tests for observed-versus-null comparisons.</li>
+    <li>Control the false discovery rate when testing many cell types or regions.</li>
+    <li>Separate confirmatory tests for H1-H3 from exploratory analysis for H4.</li>
+    <li>Publish negative and null findings rather than selecting only visually dramatic circuits.</li>
+  </ul>
+  <div class="note"><strong>Compute plan:</strong> Begin with sparse graph operations and pathway panels. Full all-pairs calculations are unnecessary. Scale only after profiling memory, runtime, and the number of reachable source-target pairs.</div>
+  <div class="footer"><span>Fault Lines in a Fly Brain</span><span>6</span></div>
+</section>
+<section class="page">
+  <div class="pagehead">06 | Manuscript architecture</div>
+  <h2>Six figures can carry the full argument</h2>
+  <table><thead><tr><th style="width:12%">Item</th><th style="width:35%">What it shows</th><th>Why it matters</th></tr></thead><tbody>
+    <tr><td><strong>Fig. 1</strong></td><td>Data flow from MaleCNS tables to pathway graphs</td><td>Makes preprocessing and exclusions transparent</td></tr>
+    <tr><td><strong>Fig. 2</strong></td><td>Baseline sensory-to-motor redundancy atlas</td><td>Establishes which modalities have alternate structural routes</td></tr>
+    <tr><td><strong>Fig. 3</strong></td><td>Random lesion robustness curves</td><td>Shows ordinary failure tolerance and uncertainty</td></tr>
+    <tr><td><strong>Fig. 4</strong></td><td>Targeted versus matched lesion curves</td><td>Tests whether identified bottlenecks matter beyond degree</td></tr>
+    <tr><td><strong>Fig. 5</strong></td><td>Observed graph versus rewired nulls</td><td>Tests whether exact biological wiring adds resilience</td></tr>
+    <tr><td><strong>Fig. 6</strong></td><td>Critical pathway case studies</td><td>Turns graph statistics into interpretable neuron and cell-type stories</td></tr>
+  </tbody></table>
+  <div class="grid2">
+    <div class="card"><h3>Tables</h3><ul><li>T1 Dataset and filtering summary</li><li>T2 Outcomes by sensory modality</li><li>T3 Top critical nodes, types, and regions with sensitivity results</li></ul></div>
+    <div class="card"><h3>Supplement</h3><ul><li>Full parameter grid</li><li>Annotation audit</li><li>All lesion curves</li><li>Null-model diagnostics</li><li>Reproduction guide</li></ul></div>
+  </div>
+  <h3 style="margin-top:5mm;">Section-by-section writing plan</h3>
+  <ol>
+    <li><strong>Introduction:</strong> Explain why a complete brain-and-cord graph changes the resilience question and state the gap without overstating function.</li>
+    <li><strong>Results:</strong> Lead with the atlas, then random failure, targeted lesions, null graphs, and case studies.</li>
+    <li><strong>Discussion:</strong> Separate structural insight from functional interpretation. Address what a single specimen can and cannot support.</li>
+    <li><strong>Methods:</strong> Make graph rules, thresholds, controls, and statistics complete enough to reproduce.</li>
+  </ol>
+  <div class="footer"><span>Fault Lines in a Fly Brain</span><span>7</span></div>
+</section>
+
+<section class="page">
+  <div class="pagehead">07 | Execution plan</div>
+  <h2>Novelty and data quality come before model building</h2>
+  <table><thead><tr><th>Week</th><th>Workstream</th><th>Exit condition</th></tr></thead><tbody>
+    <tr><td>1</td><td>Literature screen and final scope</td><td>Novelty matrix confirms the paper does not duplicate FlyGM, FLYNN, or an existing lesion study</td></tr>
+    <tr><td>2</td><td>Data access and provenance</td><td>Raw tables download, checksums match, license and citation requirements logged</td></tr>
+    <tr><td>3-4</td><td>Annotation audit and graph build</td><td>Source and target sets pass coverage checks; graph statistics reproduce</td></tr>
+    <tr><td>5-6</td><td>Baseline and random lesions</td><td>Primary robustness curves run end to end</td></tr>
+    <tr><td>7-8</td><td>Targeted lesions and nulls</td><td>Confirmatory tests complete with saved seeds and outputs</td></tr>
+    <tr><td>9</td><td>Sensitivity and case studies</td><td>Conclusions remain stable or are narrowed honestly</td></tr>
+    <tr><td>10</td><td>Figures and interactive companion</td><td>Every figure regenerates and every pathway links to source IDs</td></tr>
+    <tr><td>11</td><td>Manuscript draft and internal review</td><td>Methods, limitations, and claims align</td></tr>
+    <tr><td>12</td><td>Venue verification and submission package</td><td>Target venue passes scope, indexing, fee, and integrity checks</td></tr>
+  </tbody></table>
+  <h3>Minimum viable paper</h3>
+  <p>One visual pathway, one additional well-annotated modality, three lesion strategies, one degree-preserving null model, a complete sensitivity analysis, and reproducible code. The paper should expand only after this core result is stable.</p>
+  <h3>Roles to secure</h3>
+  <div class="grid3"><div class="card"><h3>Domain advisor</h3><p class="small">Checks neuron classes, pathway interpretation, and biological wording.</p></div><div class="card"><h3>Methods reviewer</h3><p class="small">Checks graph controls, statistics, and leakage between confirmatory and exploratory work.</p></div><div class="card"><h3>Lead analyst</h3><p class="small">Owns data provenance, code, figures, manuscript, and release package.</p></div></div>
+  <div class="callout"><p><strong>Submission rule:</strong> Do not pick a journal from reputation alone. Verify current indexing, scope, fees, review model, and predatory signals immediately before submission.</p></div>
+  <div class="footer"><span>Fault Lines in a Fly Brain</span><span>8</span></div>
+</section>
+<section class="page">
+  <div class="pagehead">08 | Risks and decisions</div>
+  <h2>The paper is strongest when its limitations shape the design</h2>
+  <table><thead><tr><th>Risk</th><th>What it means</th><th>Design response</th></tr></thead><tbody>
+    <tr><td>Single specimen</td><td>Individual variation cannot be estimated from MaleCNS alone.</td><td>Frame claims as properties of this mapped connectome and compare only where matched data are valid.</td></tr>
+    <tr><td>Static structure</td><td>Edges do not supply membrane dynamics, timing, neuromodulation, or behavior.</td><td>Use structural terms such as reachability and resilience. Do not call the result functional proof.</td></tr>
+    <tr><td>Weight ambiguity</td><td>Synapse count is not the same as physiological influence.</td><td>Compare binary, count-weighted, and optional transmitter-aware specifications.</td></tr>
+    <tr><td>Annotation gaps</td><td>Some source or target labels may be incomplete or uncertain.</td><td>Publish inclusion rules and repeat analysis after removing uncertain groups.</td></tr>
+    <tr><td>Scale</td><td>Naive all-pairs algorithms may be expensive on 166,700 nodes.</td><td>Use sparse matrices, bounded pathway panels, and profiling before full runs.</td></tr>
+    <tr><td>Novelty overlap</td><td>Recent work is appearing quickly.</td><td>Freeze the final question only after a dated literature matrix and advisor review.</td></tr>
+  </tbody></table>
+  <h3>Go or no-go checkpoints</h3>
+  <ul>
+    <li><span class="check">GO IF:</span> The official release provides stable IDs, synapse edges, and enough functional labels to define at least two pathways.</li>
+    <li><span class="check">GO IF:</span> The literature screen finds no study with the same MaleCNS whole-CNS robustness benchmark.</li>
+    <li><span class="warn">NARROW IF:</span> Labels support only one modality. Publish a deep visual sensorimotor study instead of a broad atlas.</li>
+    <li><span class="warn">STOP IF:</span> Results change direction under reasonable thresholds or null models and cannot be explained transparently.</li>
+  </ul>
+  <div class="callout"><p><strong>Best next action:</strong> Complete the novelty matrix and data dictionary first. Those two documents determine whether this becomes a credible paper or just an attractive demo.</p></div>
+  <div class="footer"><span>Fault Lines in a Fly Brain</span><span>9</span></div>
+</section>
+
+<section class="page">
+  <div class="pagehead">09 | Verified source ledger</div>
+  <h2>Facts, prior work, and proposals are kept separate</h2>
+  <p class="ref"><strong>1. Final peer-reviewed article.</strong> Berg, S., et al. Sexual dimorphism in the complete <i>Drosophila</i> male central nervous system connectome. <i>Cell</i> 189(18):5504-5526.e15 (2026). Published September 3, 2026. DOI: 10.1016/j.cell.2026.08.015. The final article reports 166,700 neurons and 11,710 neuron types; its Results section reports 124.2 million proofread synaptic connections and a graph of 25.6 million edges between 166,483 neurons. These counts supersede the earlier preprint figures. <a href="https://www.cell.com/cell/abstract/S0092-8674(26)00942-6">Cell full text</a> | <a href="https://pubmed.ncbi.nlm.nih.gov/42691995/">PubMed record</a></p>
+  <p class="ref"><strong>2. Official dataset hub.</strong> HHMI Janelia's Male CNS Connectome Project records the MaleCNS v1.0 release on June 8, 2026 and links the explorers, neuPrint, Clio, downloads, and release notes. The release notes state that the dataset is licensed under CC BY. <a href="http://male-cns.janelia.org/">MaleCNS project page</a> | <a href="http://male-cns.janelia.org/release/">Release notes</a></p>
+  <p class="ref"><strong>3. Official partner account.</strong> Google Research reports more than 166,000 neurons, approximately 125 million synaptic connections, inclusion of the ventral nerve cord, human proofreading, and public visualization and download routes. <a href="https://research.google/blog/a-connectomics-milestone-mapping-the-complete-male-fruit-fly-brain/">Google Research overview</a></p>
+  <p class="ref"><strong>4. Official institutional account.</strong> HHMI Janelia presents R1-R6 visual neurons to DNg13 as a visual-to-motor pathway example. This documents structure, not dynamic behavior. <a href="https://www.janelia.org/news/researchers-reveal-connectome-of-the-male-fruit-fly-central-nervous-system">Janelia overview</a></p>
+  <p class="ref"><strong>5. Preprint, not peer reviewed.</strong> Jin, Z., Zhu, Y., Zhang, C., and Sui, Y. Whole-Brain Connectomic Graph Model Enables Whole-Body Locomotion Control in Fruit Fly. arXiv:2602.17997v3, 2026. It is relevant prior art for connectome-grounded controllers. <a href="https://arxiv.org/abs/2602.17997v3">FlyGM preprint</a></p>
+  <p class="ref"><strong>6. Preprint, not peer reviewed.</strong> Wang, B. and Chen, J. FLYNN: Robust Neural Network for Robot Navigation using Fly Brain Topology. arXiv:2607.00025v1, 2026. It is relevant prior art for topology-based robustness claims. <a href="https://arxiv.org/abs/2607.00025">FLYNN preprint</a></p>
+  <p class="ref"><strong>7. Peer-reviewed methods paper.</strong> Wang-Chen, S., et al. NeuroMechFly v2: simulating embodied sensorimotor control in adult <i>Drosophila</i>. <i>Nature Methods</i> 21(12):2353-2362 (2024). DOI: 10.1038/s41592-024-02497-y. <a href="https://pubmed.ncbi.nlm.nih.gov/39533006/">PubMed record</a></p>
+  <div class="rule"></div>
+  <p class="small"><strong>Integrity rule for the build:</strong> Dataset counts and biological descriptions must trace to sources 1-4. Sources 5-6 establish prior art only and are labeled as preprints. Hypotheses, thresholds, lesion counts, architecture choices, and the 12-week schedule are proposed methods, not reported findings. Before submission, verify the dataset license and required acknowledgments from the official release records.</p>
+  <div class="footer"><span>Fault Lines in a Fly Brain</span><span>10</span></div>
+</section>
+</body>
+</html>
